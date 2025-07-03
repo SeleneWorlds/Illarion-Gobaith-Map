@@ -1,0 +1,8 @@
+{
+  "name": "illarion-gobaith-map",
+  "description": "Illarion Gobaith Map",
+  "entrypoints": ["server/lua/init.lua"],
+  "dependencies": [
+    "illarion-gobaith-data"
+  ]
+}
