@@ -1,5 +1,5 @@
 local Resources = require("selene.resources")
-local Maps = require("selene.maps")
+local Maps = require("selene.map")
 local Dimensions = require("selene.dimensions")
 local Saves = require("selene.saves")
 
@@ -1371,7 +1371,7 @@ function convertMap(tilesFile)
         -- Headers are in the format Key: Value
         local key, value = line:match("([^:]+):([^;]+);?")
         if key then
-            header[key] = trim(value)
+            header[key] = string.trim(value)
             if key == "X" then
                 startX = tonumber(header["X"])
             elseif key == "Y" then
@@ -1401,7 +1401,7 @@ function convertMap(tilesFile)
     end
     local itemsInput = Resources.LoadAsString(basePath .. ".items.txt")
     for line in itemsInput:gmatch("([^\n]*)\n?") do
-        if trim(line) ~= "" then
+        if string.trim(line) ~= "" then
             -- Items are in the format X;Y;Item;Quality
             local x, y, itemId, quality = line:match("(-?%d+);(-?%d+);(-?%d+);(-?%d+)")
             local itemName = IllaToItems[tonumber(itemId)]
@@ -1414,7 +1414,7 @@ function convertMap(tilesFile)
     end
     local warpsInput = Resources.LoadAsString(basePath .. ".warps.txt")
     for line in warpsInput:gmatch("([^\n]*)\n?") do
-        if trim(line) ~= "" then
+        if string.trim(line) ~= "" then
             -- Warps are in the format X;Y;ToX;ToY;ToLevel
             local x, y, toX, toY, toLevel = line:match("(-?%d+);(-?%d+);(-?%d+);(-?%d+);(-?%d+)")
             map:AnnotateTile(tonumber(x) + startX, tonumber(y) + startY, z, "illarion:warp", {
