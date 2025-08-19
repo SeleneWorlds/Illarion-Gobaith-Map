@@ -1455,4 +1455,4 @@ end
 
 print("Loading " .. mergedMapPath)
 local gobaithMap = Saves.Load(mergedMapPath)
-Dimensions.GetDefault():SetMap(gobaithMap)
+Dimensions.GetDefault().Map = gobaithMap
