@@ -1,3 +1,4 @@
+local Registries = require("selene.registries")
 local Resources = require("selene.resources")
 local Maps = require("selene.map")
 local Dimensions = require("selene.dimensions")
@@ -44,7 +45,8 @@ function convertMap(tilesFile)
             end
 
             local tileName = "illarion:tile_" .. tileId
-            if tileName == nil then
+            local tile = Registries.FindByName("tiles", tileName)
+            if tile == nil then
                 unknownTiles[tileId] = unknownTiles[tileId] and unknownTiles[tileId] + 1 or 1
             else
                 map:PlaceTile(startX + tonumber(x), startY + tonumber(y), z, tileName)
@@ -57,7 +59,8 @@ function convertMap(tilesFile)
             -- Items are in the format X;Y;Item;Quality
             local x, y, itemId, quality = line:match("(-?%d+);(-?%d+);(-?%d+);(-?%d+)")
             local itemName = "illarion:item_" .. itemId
-            if itemName == nil then
+            local tile = Registries.FindByName("tiles", itemName)
+            if tile == nil then
                 unknownItems[tonumber(itemId)] = quality
             else
                 map:PlaceTile(tonumber(x) + startX, tonumber(y) + startY, z, itemName)
