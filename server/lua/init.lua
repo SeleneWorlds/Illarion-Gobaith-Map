@@ -45,10 +45,10 @@ function convertMap(tilesFile)
             end
 
             local tile = Registries.FindByMetadata("tiles", "tileId", tonumber(tileId))
-            if tile == nil then
-                unknownTiles[tileId] = unknownTiles[tileId] and unknownTiles[tileId] + 1 or 1
-            else
+            if tile ~= nil and tileId ~= 0 then
                 map:PlaceTile(startX + tonumber(x), startY + tonumber(y), z, tile.Name)
+            elseif tileId ~= 0 then
+                unknownTiles[tileId] = unknownTiles[tileId] and unknownTiles[tileId] + 1 or 1
             end
         end
     end
