@@ -44,12 +44,11 @@ function convertMap(tilesFile)
                 tileId = tileId & BASE_MASK
             end
 
-            local tileName = "illarion:tile_" .. tileId
-            local tile = Registries.FindByName("tiles", tileName)
+            local tile = Registries.FindByMetadata("tiles", "tileId", tonumber(tileId))
             if tile == nil then
                 unknownTiles[tileId] = unknownTiles[tileId] and unknownTiles[tileId] + 1 or 1
             else
-                map:PlaceTile(startX + tonumber(x), startY + tonumber(y), z, tileName)
+                map:PlaceTile(startX + tonumber(x), startY + tonumber(y), z, tile.Name)
             end
         end
     end
@@ -58,12 +57,11 @@ function convertMap(tilesFile)
         if stringx.trim(line) ~= "" then
             -- Items are in the format X;Y;Item;Quality
             local x, y, itemId, quality = line:match("(-?%d+);(-?%d+);(-?%d+);(-?%d+)")
-            local itemName = "illarion:item_" .. itemId
-            local tile = Registries.FindByName("tiles", itemName)
+            local tile = Registries.FindByMetadata("tiles", "itemId", tonumber(itemId))
             if tile == nil then
                 unknownItems[tonumber(itemId)] = quality
             else
-                map:PlaceTile(tonumber(x) + startX, tonumber(y) + startY, z, itemName)
+                map:PlaceTile(tonumber(x) + startX, tonumber(y) + startY, z, tile.Name)
             end
         end
     end
