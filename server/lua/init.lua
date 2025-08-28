@@ -21,40 +21,42 @@ function convertMap(tilesFile)
     local header = {}
     local startX, startY, z
     for line in tilesInput:gmatch("([^\n]*)\n?") do
-        -- Headers are in the format Key: Value
-        local key, value = line:match("([^:]+):([^;]+);?")
-        if key then
-            header[key] = stringx.trim(value)
-            if key == "X" then
-                startX = tonumber(header["X"])
-            elseif key == "Y" then
-                startY = tonumber(header["Y"])
-            elseif key == "L" then
-                z = tonumber(header["L"]) - 31000
-            end
-        else
-            -- Tiles are in the format X;Y;Tile;Music
-            local x, y, combinedTileId, music = line:match("(-?%d+);(-?%d+);(%d+);(%d+)")
+        if stringx.trim(line) ~= "" and stringx.trim(line):sub(1, 1) ~= "#" then
+            -- Headers are in the format Key: Value
+            local key, value = line:match("([^:]+):([^;]+);?")
+            if key then
+                header[key] = stringx.trim(value)
+                if key == "X" then
+                    startX = tonumber(header["X"])
+                elseif key == "Y" then
+                    startY = tonumber(header["Y"])
+                elseif key == "L" then
+                    z = tonumber(header["L"]) - 31000
+                end
+            else
+                -- Tiles are in the format X;Y;Tile;Music
+                local x, y, combinedTileId, music = line:match("(-?%d+);(-?%d+);(%d+);(%d+)")
 
-            local BASE_MASK = 0x001F
-            local OVERLAY_MASK = 0x03E0
-            local SHAPE_MASK = 0xFC00
-            local tileId = tonumber(combinedTileId)
-            if (tileId & SHAPE_MASK) ~= 0 then
-                tileId = tileId & BASE_MASK
-            end
+                local BASE_MASK = 0x001F
+                local OVERLAY_MASK = 0x03E0
+                local SHAPE_MASK = 0xFC00
+                local tileId = tonumber(combinedTileId)
+                if (tileId & SHAPE_MASK) ~= 0 then
+                    tileId = tileId & BASE_MASK
+                end
 
-            local tile = Registries.FindByMetadata("tiles", "tileId", tonumber(tileId))
-            if tile ~= nil and tileId ~= 0 then
-                map:PlaceTile(startX + tonumber(x), startY + tonumber(y), z, tile.Name)
-            elseif tileId ~= 0 then
-                unknownTiles[tileId] = unknownTiles[tileId] and unknownTiles[tileId] + 1 or 1
+                local tile = Registries.FindByMetadata("tiles", "tileId", tonumber(tileId))
+                if tile ~= nil and tileId ~= 0 then
+                    map:PlaceTile(startX + tonumber(x), startY + tonumber(y), z, tile.Name)
+                elseif tileId ~= 0 then
+                    unknownTiles[tileId] = unknownTiles[tileId] and unknownTiles[tileId] + 1 or 1
+                end
             end
         end
     end
     local itemsInput = Resources.LoadAsString(basePath .. ".items.txt")
     for line in itemsInput:gmatch("([^\n]*)\n?") do
-        if stringx.trim(line) ~= "" then
+        if stringx.trim(line) ~= "" and stringx.trim(line):sub(1, 1) ~= "#" then
             -- Items are in the format X;Y;Item;Quality
             local x, y, itemId, quality = line:match("(-?%d+);(-?%d+);(-?%d+);(-?%d+)")
             local tile = Registries.FindByMetadata("tiles", "itemId", tonumber(itemId))
@@ -67,7 +69,7 @@ function convertMap(tilesFile)
     end
     local warpsInput = Resources.LoadAsString(basePath .. ".warps.txt")
     for line in warpsInput:gmatch("([^\n]*)\n?") do
-        if stringx.trim(line) ~= "" then
+        if stringx.trim(line) ~= "" and stringx.trim(line):sub(1, 1) ~= "#" then
             -- Warps are in the format X;Y;ToX;ToY;ToLevel
             local x, y, toX, toY, toLevel = line:match("(-?%d+);(-?%d+);(-?%d+);(-?%d+);(-?%d+)")
             map:AnnotateTile(tonumber(x) + startX, tonumber(y) + startY, z, "illarion:warp", {
