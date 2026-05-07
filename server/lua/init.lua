@@ -9,7 +9,7 @@ function convertMap(tilesFile)
     local baseName = basePath:gsub("illarion%-gobaith%-map/server/maps/", "")
     local outputPath = "maps/partial/" .. baseName .. ".selenemap"
     -- Skip if a converted version of this map is already present
-    if Saves.Has(outputPath) then
+    if Saves.has(outputPath) then
         return outputPath
     end
 
@@ -88,26 +88,26 @@ function convertMap(tilesFile)
     end
 
     print("Saving " .. outputPath)
-    Saves.Save(map, outputPath)
+    Saves.save(map, outputPath)
     return outputPath
 end
 
 local mergedMapPath = "maps/illarion-gobaith.selenemap"
-if not Saves.Has(mergedMapPath) then
+if not Saves.has(mergedMapPath) then
     local mergedMap = Maps.create()
-    local files = Resources.ListFiles("illarion-gobaith-map", "server/maps/*.tiles.txt")
+    local files = Resources.listFiles("illarion-gobaith-map", "server/maps/*.tiles.txt")
     for _, file in pairs(files) do
         local outputPath = convertMap(file)
-        local mapTree = Saves.Load(outputPath)
+        local mapTree = Saves.load(outputPath)
         if mapTree then
-            mergedMap:Merge(mapTree)
+            mergedMap:merge(mapTree)
         else
             print("Failed to load " .. outputPath)
         end
     end
-    Saves.Save(mergedMap, mergedMapPath)
+    Saves.save(mergedMap, mergedMapPath)
 end
 
 print("Loading " .. mergedMapPath)
-local gobaithMap = Saves.Load(mergedMapPath)
+local gobaithMap = Saves.load(mergedMapPath)
 Dimensions.getDefault():setMap(gobaithMap)
