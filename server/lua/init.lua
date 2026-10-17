@@ -4,6 +4,7 @@ local Maps = require("selene.map")
 local Dimensions = require("selene.dimensions")
 local Saves = require("selene.saves")
 local Doors = require("gobaith_doors")
+local Signposts = require("gobaith_signposts")
 local Depots = require("gobaith_depots")
 local Altars = require("gobaith_altars")
 local Portals = require("gobaith_portals")
@@ -125,6 +126,7 @@ if not Saves.has(mergedMapPath) then
         local stoneTile = assert(Registries.findByMetadata("tiles", "itemId", 1272), "Missing explorer stone tile")
         ExplorerStones.apply(mergedMap, stoneTile)
     end
+    Signposts.apply(mergedMap)
     Saves.save(mergedMap, mergedMapPath)
 end
 

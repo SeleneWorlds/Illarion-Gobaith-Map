@@ -8,6 +8,9 @@
     "illarion-gobaith-data"
   ],
   "preloads": {
+    "gobaith_signposts": {
+      "file": "server/lua/gobaith_signposts.lua"
+    },
     "gobaith_doors": {
       "file": "server/lua/gobaith_doors.lua"
     },
