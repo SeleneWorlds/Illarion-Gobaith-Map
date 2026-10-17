@@ -5,7 +5,8 @@
     "server/lua/init.lua"
   ],
   "dependencies": [
-    "illarion-gobaith-data"
+    "illarion-gobaith-data",
+    "illarion-gobaith"
   ],
   "preloads": {
     "gobaith_signposts": {
