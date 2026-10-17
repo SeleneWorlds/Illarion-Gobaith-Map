@@ -50,7 +50,7 @@ function convertMap(tilesFile)
                     tileId = tileId & BASE_MASK
                 end
 
-                local tile = Registries.findByMetadata("tiles", "tileId", tonumber(tileId))
+                local tile = Registries.findByName("tiles", "illarion:tile_" .. tileId)
                 if tile ~= nil and tileId ~= 0 then
                     map:placeTile(startX + tonumber(x), startY + tonumber(y), z, tile:getName())
                 elseif tileId ~= 0 then
