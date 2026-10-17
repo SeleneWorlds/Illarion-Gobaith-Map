@@ -3,6 +3,11 @@ local Resources = require("selene.resources")
 local Maps = require("selene.map")
 local Dimensions = require("selene.dimensions")
 local Saves = require("selene.saves")
+local Doors = require("gobaith_doors")
+local Depots = require("gobaith_depots")
+local Altars = require("gobaith_altars")
+local Portals = require("gobaith_portals")
+local ExplorerStones = require("gobaith_explorer_stones")
 
 function convertMap(tilesFile)
     local basePath = tilesFile:gsub(".tiles.txt", "")
@@ -59,11 +64,18 @@ function convertMap(tilesFile)
         if stringx.trim(line) ~= "" and stringx.trim(line):sub(1, 1) ~= "#" then
             -- Items are in the format X;Y;Item;Quality
             local x, y, itemId, quality = line:match("(-?%d+);(-?%d+);(-?%d+);(-?%d+)")
-            local tile = Registries.findByMetadata("tiles", "itemId", tonumber(itemId))
+            local worldX, worldY = tonumber(x) + startX, tonumber(y) + startY
+            local annotations
+            itemId, annotations = Doors.convert(worldX, worldY, z, tonumber(itemId), quality)
+            annotations = Altars.convert(worldX, worldY, z) or annotations
+            local tile = Registries.findByMetadata("tiles", "itemId", itemId)
             if tile == nil then
                 unknownItems[tonumber(itemId)] = quality
             else
-                map:placeTile(tonumber(x) + startX, tonumber(y) + startY, z, tile:getName())
+                map:placeTile(worldX, worldY, z, tile:getName())
+                if annotations then
+                    map:annotateTile(worldX, worldY, z, tile:getName(), annotations)
+                end
             end
         end
     end
@@ -104,6 +116,14 @@ if not Saves.has(mergedMapPath) then
         else
             print("Failed to load " .. outputPath)
         end
+    end
+    local depotTile = assert(Registries.findByMetadata("tiles", "itemId", 321), "Missing depot tile")
+    Depots.apply(mergedMap, depotTile)
+    local portalTile = assert(Registries.findByMetadata("tiles", "itemId", 10), "Missing portal tile")
+    Portals.apply(mergedMap, portalTile)
+    if ExplorerStones.enabled then
+        local stoneTile = assert(Registries.findByMetadata("tiles", "itemId", 1272), "Missing explorer stone tile")
+        ExplorerStones.apply(mergedMap, stoneTile)
     end
     Saves.save(mergedMap, mergedMapPath)
 end

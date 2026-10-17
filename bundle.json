@@ -1,8 +1,27 @@
 {
   "name": "illarion-gobaith-map",
   "description": "Illarion Gobaith Map",
-  "entrypoints": ["server/lua/init.lua"],
+  "entrypoints": [
+    "server/lua/init.lua"
+  ],
   "dependencies": [
     "illarion-gobaith-data"
-  ]
+  ],
+  "preloads": {
+    "gobaith_doors": {
+      "file": "server/lua/gobaith_doors.lua"
+    },
+    "gobaith_depots": {
+      "file": "server/lua/gobaith_depots.lua"
+    },
+    "gobaith_altars": {
+      "file": "server/lua/gobaith_altars.lua"
+    },
+    "gobaith_portals": {
+      "file": "server/lua/gobaith_portals.lua"
+    },
+    "gobaith_explorer_stones": {
+      "file": "server/lua/gobaith_explorer_stones.lua"
+    }
+  }
 }
