@@ -26,6 +26,9 @@
     },
     "gobaith_explorer_stones": {
       "file": "server/lua/gobaith_explorer_stones.lua"
+    },
+    "gobaith_bookshelves": {
+      "file": "server/lua/gobaith_bookshelves.lua"
     }
   }
 }

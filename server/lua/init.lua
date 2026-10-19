@@ -7,6 +7,7 @@ local Doors = require("gobaith_doors")
 local Signposts = require("gobaith_signposts")
 local Depots = require("gobaith_depots")
 local Altars = require("gobaith_altars")
+local Bookshelves = require("gobaith_bookshelves")
 local Portals = require("gobaith_portals")
 local ExplorerStones = require("gobaith_explorer_stones")
 
@@ -69,6 +70,7 @@ function convertMap(tilesFile)
             local annotations
             itemId, annotations = Doors.convert(worldX, worldY, z, tonumber(itemId), quality)
             annotations = Altars.convert(worldX, worldY, z) or annotations
+            annotations = Bookshelves.convert(worldX, worldY, z, itemId) or annotations
             local tile = Registries.findByMetadata("tiles", "itemId", itemId)
             if tile == nil then
                 unknownItems[tonumber(itemId)] = quality
