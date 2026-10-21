@@ -46,7 +46,7 @@ function M.apply(map, tile)
         local destination = assert(Registries.findByName("illarion:mage_portal_destinations", portal.destination),
             "Missing portal destination: " .. portal.destination)
         local data = MagePortals.data(destination)
-        data.quality, data.wear = 333, 255
+        data.quality, data.durability, data.wear = 3, 99, 255
         map:annotateTile(portal.x, portal.y, portal.z, name, data)
     end
 end

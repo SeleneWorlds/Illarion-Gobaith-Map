@@ -275,10 +275,10 @@ function M.convert(x, y, z, itemId, quality)
     end
     if not door.unlocked then
         itemId = openDoors[itemId] or itemId
-        quality = 333
+        quality = 3
     elseif closedDoors[itemId] then
-        quality = 233
+        quality = 2
     end
-    return itemId, {data = door.data, quality = tonumber(quality)}
+    return itemId, {data = door.data, quality = door.unlocked and 2 or 3, durability = 99, locked = not door.unlocked and "true" or nil}
 end
 return M

@@ -438,7 +438,7 @@ function M.apply(map)
             CustomName = sign.en,
             CustomNameDe = sign.de,
             perception = sign.perception,
-            quality = 333
+            quality = 3, durability = 99
         })
     end
 end
