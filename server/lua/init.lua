@@ -113,7 +113,7 @@ if not Saves.has(mergedMapPath) then
     local files = Resources.listFiles("illarion-gobaith-map", "server/maps/*.tiles.txt")
     for _, file in pairs(files) do
         local outputPath = convertMap(file)
-        local mapTree = Saves.load(outputPath)
+        local mapTree = Saves.loadMapTree(outputPath)
         if mapTree then
             mergedMap:merge(mapTree)
         else
@@ -133,5 +133,5 @@ if not Saves.has(mergedMapPath) then
 end
 
 print("Loading " .. mergedMapPath)
-local gobaithMap = Saves.load(mergedMapPath)
+local gobaithMap = Saves.loadMapTree(mergedMapPath)
 Dimensions.getDefault():setMap(gobaithMap)
